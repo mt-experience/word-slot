@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>アンビリバボースロット</title>
+<script>
+  'use strict'
+  window.addEventListener("load", function(){
+    const btn = document.getElementById("roll-button")
+    const resultArea = document.getElementById("result-area")
+    btn.addEventListener("click", ()=>{
+      const sizes = document.getElementById("sizes-area").value
+          .split(',').map(c => parseInt(c, 10))
+          .filter(v => v) // NaN等の排除
+      const letters = document.getElementById("letters-area").value
+          .split("")
+      resultArea.value = generate(sizes, letters)
+      // 入力がまずかったのを気が付かせるために
+      document.getElementById("sizes-area").value = sizes
+      document.getElementById("letters-area").value = letters.join("") // 文字配列を文字列に変換
+    })
+    
+    function generate(sizes, letters){
+      let ret = []
+      sizes.forEach(s => {
+        for(let i=0; i<s; i++){
+          ret.push(letters[Math.floor(Math.random()*letters.length)])
+        }
+        ret.push(["ー", "！"][Math.floor(Math.random()*2)])
+      })
+      return ret.join("") // 絵文字を含む加工が終わったので文字列にする
+    }
+  })
+</script>
+
+</head>
+<body>
+  並べる文字。カンマ「,」は入力できない。<br>
+  <textarea id="letters-area">[体験奇跡]！[ビリバボアン]ー</textarea><br>
+  <br>
+  <textarea id="result-area" readonly></textarea><br>
+  <button id="roll-button">回</button>
+</body>
+</html>
